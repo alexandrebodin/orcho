@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const path = require("path");
+
+let args = process.argv.slice(2);
+let cmdArgs = [];
+
+if (args.length === 0) {
+  cmdArgs = ["run", `${process.env.npm_lifecycle_event}`];
+} else {
+  cmdArgs = ["run", ...args];
+}
+
+try {
+  require("child_process").execFileSync(
+    path.join(__dirname, "../../../target/release/orcho"),
+    cmdArgs,
+    { stdio: "inherit" }
+  );
+} catch (e) {
+  if (e && e.status) process.exit(e.status);
+  throw e;
+}

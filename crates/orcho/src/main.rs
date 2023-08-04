@@ -1,3 +1,7 @@
+use clap::Parser;
+
 fn main() {
-    println!("Hello, world!");
+    let args = orcho::Cli::parse();
+
+    orcho::run(args);
 }

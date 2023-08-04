@@ -1,0 +1,19 @@
+{
+  "name": "@alexandrebodin/orcho",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin":{
+    "orcho": "./bin/orcho"
+  },
+  "scripts": {
+    "postinstall": "node ./lib/install.js"
+  },
+  "optionalDependencies": {
+    "@alexandrebodin/orcho-darwin-x64": "0.0.0",
+    "@alexandrebodin/orcho-darwin-arm64": "0.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
