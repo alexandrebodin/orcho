@@ -1,0 +1,4 @@
+tasks:
+  my-task:
+    run:
+      - echo "task"
