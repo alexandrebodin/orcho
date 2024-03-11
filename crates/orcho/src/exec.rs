@@ -1,14 +1,22 @@
-use std::{
-    io,
-    process::{Child, Command, Stdio},
-};
+use std::process::{Command, Stdio};
 
-pub fn exec_cmd(cmd: &str) -> io::Result<Child> {
-    Command::new("sh")
-        .arg("-c")
-        .arg(cmd)
-        .stdin(Stdio::null())
-        .stdout(Stdio::inherit())
-        .stderr(Stdio::inherit())
-        .spawn()
+use crate::project::Task;
+
+pub fn exec_task(task: &Task) -> Result<(), Box<dyn std::error::Error>> {
+    for cmd_str in &task.run {
+        let mut cmd = Command::new("sh");
+
+        cmd.arg("-c").arg(cmd_str);
+
+        if let Some(envs) = &task.env {
+            cmd.envs(envs);
+        }
+
+        cmd.stdin(Stdio::null())
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit())
+            .spawn()?;
+    }
+
+    Ok(())
 }

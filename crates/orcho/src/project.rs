@@ -1,15 +1,16 @@
-use std::{collections::BTreeMap, env};
+use std::{collections::HashMap, env};
 
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Project {
-    pub tasks: BTreeMap<String, Task>,
+    pub tasks: HashMap<String, Task>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Task {
     pub run: Vec<String>,
+    pub env: Option<HashMap<String, String>>,
 }
 
 pub fn load() -> Result<Project, Box<dyn std::error::Error>> {

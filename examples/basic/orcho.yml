@@ -1,4 +1,7 @@
 tasks:
   my-task:
+    env:
+      MY_VAR: "my-value"
     run:
       - echo "task"
+      - echo $MY_VAR

@@ -31,7 +31,7 @@ pub fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
                 return commands::run::exec(&project, name);
             }
 
-            return Err("No command specified")?;
+            Err("No command specified")?
         }
     }
 }
