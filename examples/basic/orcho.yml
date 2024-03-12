@@ -1,7 +1,12 @@
 tasks:
-  my-task:
+  build:
     env:
-      MY_VAR: "my-value"
+      NODE_ENV: production
     run:
-      - echo "task"
-      - echo $MY_VAR
+      - yarn run tsc -p tsconfig.json
+
+  start:
+    dependsOn: 
+      - build
+    run:
+      - node dist/index.js

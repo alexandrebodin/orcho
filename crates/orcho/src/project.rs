@@ -7,8 +7,10 @@ pub struct Project {
     pub tasks: HashMap<String, Task>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct Task {
+    pub depends_on: Option<Vec<String>>,
     pub run: Vec<String>,
     pub env: Option<HashMap<String, String>>,
 }

@@ -15,7 +15,7 @@ pub fn exec_task(task: &Task) -> Result<(), Box<dyn std::error::Error>> {
         cmd.stdin(Stdio::null())
             .stdout(Stdio::inherit())
             .stderr(Stdio::inherit())
-            .spawn()?;
+            .status()?;
     }
 
     Ok(())
