@@ -25,11 +25,12 @@ enum Commands {
 pub fn run(cli: Cli) -> Result<(), Box<dyn std::error::Error>> {
     let project = project::load()?;
 
+    run_cli(cli, project)
+}
+
+fn run_cli(cli: Cli, project: project::Project) -> Result<(), Box<dyn std::error::Error>> {
     match cli.command {
-        Some(Commands::Run { name }) => {
-            commands::run::exec(&project, name)
-            // read the config file
-        }
+        Some(Commands::Run { name }) => commands::run::exec(&project, name),
         None => {
             if let Some(name) = cli.name {
                 return commands::run::exec(&project, name);

@@ -6,7 +6,7 @@ tasks:
       - yarn run tsc -p tsconfig.json
 
   start:
-    dependsOn: 
+    dependsOn:
       - build
     run:
       - node dist/index.js
