@@ -1,0 +1,84 @@
+# This workflow is inspired by https://github.com/oxc-project/oxc
+
+name: cd
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
+        default: "0.1.0"
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            label: win32-x64
+
+          - os: windows-latest
+            target: aarch64-pc-windows-msvc
+            label: win32-arm64
+
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            label: linux-x64-gnu
+
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            label: linux-arm64-gnu
+
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            label: linux-x64-musl
+
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-musl
+            label: linux-arm64-musl
+
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            label: darwin-x64
+
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            label: darwin-arm64
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: ${{ matrix.target }}
+          toolchain: stable
+
+      - run: cargo install cross
+
+      - run: cross build --release --target ${{ matrix.target }}
+
+      - name: Archive artifacts
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          BIN_NAME=orcho-${{ matrix.label }}
+          mv target/${{ matrix.target }}/release/orcho.exe $BIN_NAME.exe
+          7z a $BIN_NAME.zip $BIN_NAME.exe
+
+      - name: Archive artifacts
+        if: runner.os != 'Windows'
+        run: |
+          BIN_NAME=orcho-${{ matrix.label }}
+          mv target/${{ matrix.target }}/release/orcho $BIN_NAME
+          tar czf $BIN_NAME.tar.gz $BIN_NAME
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: orcho-${{ matrix.target }}
+          path: |
+            *.zip
+            *.tar.gz
