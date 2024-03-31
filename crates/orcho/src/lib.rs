@@ -51,12 +51,12 @@ pub fn dependency_graph(project: &project::Project) -> TaskGraph {
     let mut graph = Graph::<Task, ()>::new();
     let mut nodes: HashMap<String, _> = HashMap::new();
 
-    for (name, task) in &project.tasks {
+    for (name, task) in &project.config.as_ref().unwrap().tasks {
         let node = graph.add_node(task.clone());
         nodes.insert(name.to_string(), node);
     }
 
-    for (name, task) in &project.tasks {
+    for (name, task) in &project.config.as_ref().unwrap().tasks {
         let from = nodes.get(name).unwrap();
 
         if let Some(depends_on) = &task.depends_on {

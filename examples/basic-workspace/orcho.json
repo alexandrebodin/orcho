@@ -1,0 +1,17 @@
+{
+  "tasks": {
+    "build": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "run": [
+        "yarn -s run tsc -p tsconfig.json",
+        "echo Build completed for $NODE_ENV environment"
+      ]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "run": ["node dist/index.js"]
+    }
+  }
+}
